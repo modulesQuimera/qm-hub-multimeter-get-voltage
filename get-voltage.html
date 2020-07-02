@@ -1,7 +1,7 @@
 <script type="text/javascript">
     RED.nodes.registerType('getVoltage',{
         category: 'multimeter modular',
-        color: '#EEE8AA',
+        color: '#C0C0C0',
         defaults: {
             name:{ value: "" },
             mapeamento:{ value:"", type: "multimeter-slot1-mapping" },
@@ -12,9 +12,9 @@
         },
         inputs:1,
         outputs:1,
-        icon: "font-awesome/fa-bars",
-        label: function() { return this.name || "getVoltage" },
-        paletteLabel: "getVoltage",
+        icon: "./icons/get voltage.svg",
+        label: function() { return this.name || "Get Voltage" },
+        paletteLabel: "Get Voltage",
         oneditprepare: function() {
             var ports = []
             var self = this
@@ -33,6 +33,13 @@
                 });
             })
             $("#node-input-mapeamento").val($("#node-input-mapeamento option:first").val());
+        },
+        oneditresize: function() {
+            if(!$("#red-ui-header-button-deploy").hasClass("disabled")){
+                $("#node-dialog-ok").click()
+                $("#red-ui-header-button-deploy").click()
+                $("#red-ui-deploy-dialog-confirm-deploy-deploy").click()
+            }
         },
         oneditsave: function() {
             var mytype = $("#node-config-input-port").typedInput('type');
