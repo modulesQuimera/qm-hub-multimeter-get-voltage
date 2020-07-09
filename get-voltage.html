@@ -7,12 +7,12 @@
             mapeamento:{ value:"", type: "multimeter-slot1-mapping" },
             // websocket:{ type: "jig-web-socket", required: true },
             AC_mode:{ value:"" },
-            channel_number:{ value:"" },
-            scale: { value:"" },
-            compare_select: {value:"equalTo", required:true},
-            equalTo: {value: ''},
-            maxValue: {value: null, validate:RED.validators.number()},
-            minValue: {value: null, validate:RED.validators.number()}
+            channel_number:{ value:"", required: true},
+            scale: { value:"", required: true },
+            compare_select: {value:"interval", required:true},
+            // equalTo: {value: ''},
+            maxValue: {value: null},
+            minValue: {value: null}
         },
         inputs:1,
         outputs:1,
@@ -25,31 +25,29 @@
 
             $("#node-input-compare_select").on("change", function(e) {
                 var compare = $(this).val();
-                if (compare === "equalTo") {
-                    $(".node-input-equal-to").show();
-                    $(".node-input-max-value").hide();
-                    $(".node-input-min-value").hide();
-                }
+                // if (compare === "equalTo") {
+                //     $(".node-input-equal-to").show();
+                //     $(".node-input-max-value").hide();
+                //     $(".node-input-min-value").hide();
+                // }
                 if (compare === "interval") {
-                    $(".node-input-equal-to").hide();
+                    // $(".node-input-equal-to").hide();
                     $(".node-input-max-value").show();
                     $(".node-input-min-value").show();
                 }
 
                 if (compare === "maxValue") {
-                    $(".node-input-equal-to").hide();
+                    // $(".node-input-equal-to").hide();
                     $(".node-input-max-value").show();
                     $(".node-input-min-value").hide();
                 }
                 if (compare === "minValue") {
-                    $(".node-input-equal-to").hide();
+                    // $(".node-input-equal-to").hide();
                     $(".node-input-max-value").hide();
                     $(".node-input-min-value").show();
                 }
                 // node._resize();
             });
-
-
 
             var ports = []
             var self = this
@@ -86,9 +84,7 @@
 
 </script>
 
-
 <style>
-
     label{
         width: 50% !important;
         margin-bottom: 2px !important;
@@ -118,8 +114,6 @@
         display: flex !important;
         flex-direction: column !important;
     }
-
-
 </style>
 
 <script type="text/html" data-template-name="getVoltage">
@@ -127,14 +121,7 @@
         <strong class="descript">
             A comparation is made with the measured voltage value.
         </strong>
-     </div>
-
-    <!-- <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
     </div>
-    <br> -->
-
     <div style="display: flex;">
         <div class="form-row columm" style=" width: 50%; float: left;">
             <label for="node-input-AC_mode"><i class="fa fa-sliders"></i> AC mode</label>
@@ -143,25 +130,13 @@
                 <option value="false">False</option>
             </select>
         </div>
-
         <div class="form-row columm" style=" width: 50%; float: left;">
             <label for="node-input-scale" style=""><i class="fa fa-expand"></i> Scale</label>
-            <!-- <select id="node-input-scale" style="width:13%; margin-left:-10%">
-                <option value="300" selected>300</option> 
-                <option value="30">30</option>
-                <option value="6">6</option>
-            </select> -->
-            <!-- <div style="margin-top: 20px" class="form-row"> -->
-                <!-- <label for="node-input-timeout"><i class="fa fa-clock-o"></i> Timeout</label> -->
             <input type="number" step="any" id="node-input-scale" placeholder="scale" style="width:50%;">
-                <!-- <label for="node-input-timeout"> ms</label> -->
-            <!-- </div> -->
         </div>
     </div>
-
     <div class="form-row columm">
         <label for="node-input-channel_number"><i class="fa fa-list-ul"></i> Channel number</label>
-
         <div>
             <input type="text" id="node-config-input-port" style="width: 40%">
             <div style="width:20px; margin-left:180px; margin-top:-34px" selected>
@@ -172,51 +147,43 @@
     <div class="form-row columm ">
         <label style="width: auto; margin-top: 8px;" for="node-input-compare_select"><i class="icon-tag"></i>Comparison Type:</label>
         <select id="node-input-compare_select"  >
-            <option value="equalTo">Equal to</option>
+            <!-- <option value="equalTo">Equal to</option> -->
             <option value="interval">Interval</option>
             <option value="maxValue">Maximum value (<)</option>
             <option value="minValue">Minimum value (>)</option>  
         </select>
       </div>
       <div class="form-row columm" style="display: flex;">
-        <div class="node-input-equal-to">
+        <!-- <div class="node-input-equal-to">
           <div class="columm">
             <label for="node-input-equalTo" style="width: max-content; !important"><i class="icon-tag"></i>Equal To: </label>
-          <input type="text" id="node-input-equalTo" style=" width:70px !important ">
+          <input type="number" id="node-input-equalTo" style=" width:70px !important ">
           </div>
-        </div>
-
+        </div> -->
         <div class=box>
             <div class="node-input-min-value" style="display: none; width: min-content; float: left; margin-right: 40px;">
                 <div class="columm">
                     <label for="node-input-minValue" style="width: max-content !important;"><i class="icon-tag"></i>Minimum Value: </label>
-                    <input type="text" id="node-input-minValue" style=" width:70px !important ">
+                    <input type="number" id="node-input-minValue" style=" width:70px !important ">
                 </div>
             </div>
             <div class="node-input-max-value" style="display: none;">
                 <div class="columm">
                     <label for="node-input-maxValue" style="width: max-content !important"><i class="icon-tag"></i>Maximum Value: </label>
-                    <input type="text" id="node-input-maxValue" style=" width:70px !important ">
+                    <input type="number" id="node-input-maxValue" style=" width:70px !important ">
                 </div>
             </div>
         </div>
     </div>
-
     <div class="hr-div-get-voltage">
         <hr>
         <span class="optional">Optional</span>
         <hr>
     </div>
-
     <div class="form-row columm">
         <label style="width: 50% !important;" for="node-input-name" ><i class="fa fa-tag"></i> Component Nickname</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
-
-    <!-- <div class="form-row node-input-websocket" style="margin-top: 20px">
-        <label for="node-input-websocket"><i class="fa fa-random"></i> websocket config</label>
-        <input type="text" id="node-input-websocket" style="width: 230px">
-    </div> -->
 </script>
 
 <script type="text/html" data-help-name="getVoltage">
