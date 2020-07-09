@@ -10,38 +10,35 @@ module.exports = function(RED) {
         this.AC_mode = config.AC_mode === "true" ? true : false,
         this.scale = config.scale;
         this.compare_select = config.compare_select;
-        this.equalTo = config.equalTo;
+        // this.equalTo = config.equalTo;
         this.maxValue = config.maxValue;
         this.minValue = config.minValue;
-        // this.websocket = config.websocket
-        // this.websocketConfig = RED.nodes.getNode(this.websocket);
         mapeamentoNode = RED.nodes.getNode(this.mapeamento);
         var node = this
         
         node.on('input', function(msg, send, done) {
 
             var _compare = {};
-            if (node.compare_select == "equalTo") {
-                _compare = {
-                    voltage_value: {"==": (!isNaN(parseFloat(node.equalTo)))? parseFloat(node.equalTo):node.equalTo }
-                }
-            }
+            // if (node.compare_select == "equalTo") {
+            //     _compare = {
+            //         voltage_value: {"==": (!isNaN(parseFloat(node.equalTo)))? parseFloat(node.equalTo):node.equalTo }
+            //     }
+            // }
             if (node.compare_select == "interval") {
                 _compare = {
-                    voltage_value: {">=": parseFloat(node.minValue), "<=": parseFloat(node.maxValue)}
+                    voltage: {">=": parseFloat(node.minValue), "<=": parseFloat(node.maxValue)}
                 }
             }
             if (node.compare_select == "maxValue") {
                 _compare = {
-                    voltage_value: {">=": null, "<=": parseFloat(node.maxValue)}
+                    voltage: {">=": null, "<=": parseFloat(node.maxValue)}
                 }
             }
             if (node.compare_select == "minValue") {
                 _compare = {
-                    voltage_value: {">=": parseFloat(node.minValue), "<=": null}
+                    voltage: {">=": parseFloat(node.minValue), "<=": null}
                 }
             }
-
 
             var globalContext = node.context().global;
             var exportMode = globalContext.get("exportMode");
@@ -56,13 +53,11 @@ module.exports = function(RED) {
                 scale: parseFloat(node.scale),
                 compare: _compare
             }
-            console.log(command)
             var file = globalContext.get("exportFile")
             if(currentMode == "test"){file.slots[slot].jig_test.push(command)}
             else{file.slots[slot].jig_error.push(command)}
             globalContext.set("exportFile", file);
-            // node.status({fill:"green", shape:"dot", text:"done"}); // seta o status pra waiting
-            // msg.payload = command
+            console.log(command)
             send(msg)
         });
     }
