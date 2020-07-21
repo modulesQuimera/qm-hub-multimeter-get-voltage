@@ -1,7 +1,7 @@
 <script type="text/javascript">
     RED.nodes.registerType('getVoltage',{
         category: 'multimeter modular',
-        color: '#C0C0C0',
+        color: '#32CD32',
         defaults: {
             name:{ value: "" },
             mapeamento:{ value:"", type: "multimeter-slot1-mapping" },
@@ -16,8 +16,8 @@
         },
         inputs:1,
         outputs:1,
-        icon: "get_voltage.svg",
-        label: function() { return this.name || "Get Voltage" },
+        icon: "Multimeter_Modular.svg",
+        label: function() { return this.name? "Get Voltage - "+ this.name: "Get Voltage" },
         paletteLabel: "Get Voltage",
         oneditprepare: function() {
             var node = this;
@@ -43,21 +43,72 @@
 
             var ports = []
             var self = this
-
-            $.getJSON('getMapeamentoMultimetro',function(data) {
-                ports = data  
-                var portType = "custom";
-                for (var i in ports) {
-                    if (self.channel_number == ports[i].value) {
-                        portType = self.channel_number;
-                    }
-                }
-                $("#node-config-input-port").typedInput({
-                    default: self.channel_number,
-                    types:ports
-                });
-            })
-            $("#node-input-mapeamento").val($("#node-input-mapeamento option:first").val());
+            var config_mapeamento = RED.nodes.node(this.mapeamento)
+            // console.log(config_mapeamento)
+            if(config_mapeamento){
+                ports = [
+                    {value:config_mapeamento.valuePort1, label:"A1 - " + config_mapeamento.labelPort1, hasValue:false},
+                    {value:config_mapeamento.valuePort2, label: "A2 - " + config_mapeamento.labelPort2, hasValue:false},
+                    {value:config_mapeamento.valuePort3, label: "A3 - " + config_mapeamento.labelPort3, hasValue:false},
+                    {value:config_mapeamento.valuePort4, label: "A4 - " + config_mapeamento.labelPort4, hasValue:false},
+                    {value:config_mapeamento.valuePort5, label: "A5 - " + config_mapeamento.labelPort5, hasValue:false},
+                    {value:config_mapeamento.valuePort6, label: "A6 - " + config_mapeamento.labelPort6, hasValue:false},
+                    {value:config_mapeamento.valuePort7, label: "A7 - " + config_mapeamento.labelPort7, hasValue:false},
+                    {value:config_mapeamento.valuePort8, label: "A8 - " + config_mapeamento.labelPort8, hasValue:false},
+                    {value:config_mapeamento.valuePort9, label: "A9 - " + config_mapeamento.labelPort9, hasValue:false},
+                    {value:config_mapeamento.valuePort10, label: "A10 - " + config_mapeamento.labelPort10, hasValue:false},
+                    {value:config_mapeamento.valuePort11, label: "A11 - " + config_mapeamento.labelPort11, hasValue:false},
+                    {value:config_mapeamento.valuePort12, label: "APW - " + config_mapeamento.labelPort12, hasValue:false},
+                    {value:config_mapeamento.valuePort13, label: "AMX - " + config_mapeamento.labelPort13, hasValue:false},
+                    {value:config_mapeamento.valuePort14, label: "B1 - " + config_mapeamento.labelPort14, hasValue:false},
+                    {value:config_mapeamento.valuePort15, label: "B2 - " + config_mapeamento.labelPort15, hasValue:false},
+                    {value:config_mapeamento.valuePort16, label: "B3 - " + config_mapeamento.labelPort16, hasValue:false},
+                    {value:config_mapeamento.valuePort17, label: "B4 - " + config_mapeamento.labelPort17, hasValue:false},
+                    {value:config_mapeamento.valuePort18, label: "B5 - " + config_mapeamento.labelPort18, hasValue:false},
+                    {value:config_mapeamento.valuePort19, label: "B6 - " + config_mapeamento.labelPort19, hasValue:false},
+                    {value:config_mapeamento.valuePort20, label: "B7 - " + config_mapeamento.labelPort20, hasValue:false},
+                    {value:config_mapeamento.valuePort21, label: "B8 - " + config_mapeamento.labelPort21, hasValue:false},
+                    {value:config_mapeamento.valuePort22, label: "B9 - " + config_mapeamento.labelPort22, hasValue:false},
+                    {value:config_mapeamento.valuePort23, label: "B10 - " + config_mapeamento.labelPort23, hasValue:false},
+                    {value:config_mapeamento.valuePort24, label: "B11 - " + config_mapeamento.labelPort24, hasValue:false},
+                    {value:config_mapeamento.valuePort25, label: "BPW - " + config_mapeamento.labelPort25, hasValue:false},
+                    {value:config_mapeamento.valuePort26, label: "BMX - " + config_mapeamento.labelPort26, hasValue:false},
+                ]; 
+            }
+            else{
+                ports = [
+                    {label:"A1 - ", value: "0", hasValue:false},
+                    {label:"A2 - ", value: "1", hasValue:false},
+                    {label:"A3 - ", value: "2", hasValue:false},
+                    {label:"A4 - ", value: "3", hasValue:false},
+                    {label:"A5 - ", value: "4", hasValue:false},
+                    {label:"A6 - ", value: "5", hasValue:false},
+                    {label:"A7 - ", value: "6", hasValue:false},
+                    {label:"A8 - ", value: "7", hasValue:false},
+                    {label:"A9 - ", value: "8", hasValue:false},
+                    {label:"A10 - ", value: "9", hasValue:false},
+                    {label:"A11 - ", value: "10", hasValue:false},
+                    {label:"APW - ", value: "11", hasValue:false},
+                    {label:"AMX - ", value: "12", hasValue:false},
+                    {label:"B1 - ", value: "13", hasValue:false},
+                    {label:"B2 - ", value: "14", hasValue:false},
+                    {label:"B3 - ", value: "15", hasValue:false},
+                    {label:"B4 - ", value: "16", hasValue:false},
+                    {label:"B5 - ", value: "17", hasValue:false},
+                    {label:"B6 - ", value: "18", hasValue:false},
+                    {label:"B7 - ", value: "19", hasValue:false},
+                    {label:"B8 - ", value: "20", hasValue:false},
+                    {label:"B9 - ", value: "21", hasValue:false},
+                    {label:"B10 - ", value: "22", hasValue:false},
+                    {label:"B11 - ", value: "23", hasValue:false},
+                    {label:"BPW - ", value: "24", hasValue:false},
+                    {label:"BMX - ", value: "25", hasValue:false},
+                ];
+            }
+            $("#node-config-input-port").typedInput({
+                default: self.channel_number,
+                types:ports
+            });
         },
         oneditresize: function() {
             if(!$("#red-ui-header-button-deploy").hasClass("disabled")){
@@ -111,7 +162,7 @@
 <script type="text/html" data-template-name="getVoltage">
     <div class="form-row columm">
         <strong class="descript">
-            A comparation is made with the measured voltage value.
+            Measures a voltage.
         </strong>
     </div>
     <div style="display: flex;">
@@ -131,10 +182,14 @@
         <label for="node-input-channel_number"><i class="fa fa-list-ul"></i> Channel number</label>
         <div>
             <input type="text" id="node-config-input-port" style="width: 40%">
-            <div style="width:20px; margin-left:180px; margin-top:-34px" selected>
+            <!-- <div style="width:20px; margin-left:180px; margin-top:-34px" selected>
                 <input type="text" id="node-input-mapeamento" placeholder="mapeamento">
-            </div>
+            </div> -->
         </div>
+    </div>
+    <div class="form-row">
+        <label for="node-input-mapeamento"><i class="fa fa-map"></i> Mapping</label>
+        <input type="text" id="node-input-mapeamento">
     </div>
     <div class="form-row columm ">
         <label style="width: auto; margin-top: 8px;" for="node-input-compare_select"><i class="icon-tag"></i>Comparison Type:</label>
@@ -173,7 +228,7 @@
 </script>
 
 <script type="text/html" data-help-name="getVoltage">
-    <p>A comparation is made with the measured voltage value.</p>
+    <p>Measures a voltage.</p>
 </script>
 
 
